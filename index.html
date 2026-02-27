@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostr WoT Seed Candidates</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0f0f0f;
+            color: #e5e5e5;
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .methodology {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .methodology h3 {
+            color: #fff;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .methodology p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .criteria {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .criteria span {
+            background: #252525;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #ccc;
+            font-family: monospace;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #8b5cf6;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .card-rank {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .card-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .card-npub {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #666;
+            word-break: break-all;
+        }
+        
+        .ratio-badge {
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .card-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        
+        .card-stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .card-stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .card-stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        
+        .card-about {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin: 1rem 0;
+            line-height: 1.5;
+            max-height: 4.5em;
+            overflow: hidden;
+        }
+        
+        .card-sources {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .card-link {
+            display: inline-block;
+            background: #8b5cf6;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .card-link:hover {
+            background: #7c3aed;
+        }
+        
+        footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔱 Nostr WoT Seed Candidates</h1>
+        <p class="subtitle">High-trust accounts ideal for anchoring a Web of Trust graph</p>
+        
+        <div class="methodology">
+            <h3>What are WoT Seeds?</h3>
+            <p>Web of Trust (WoT) systems need "seed" accounts to anchor the trust graph. Ideal seeds are <strong>influential</strong> (many followers) but <strong>selective</strong> (follow few). This combination indicates high signal-to-noise judgment.</p>
+            
+            <h3>Filtering Criteria</h3>
+            <div class="criteria">
+                <span>following &lt; 300</span>
+                <span>followers &gt; 1000</span>
+                <span>ratio = followers / following &gt; 10</span>
+            </div>
+            
+            <h3>Ratio Badge Colors</h3>
+            <p>
+                <span style="display:inline-block;padding:0.2rem 0.5rem;border-radius:4px;background:#22c55e;color:#000;font-weight:bold;">Green &gt;50x</span>
+                <span style="display:inline-block;padding:0.2rem 0.5rem;border-radius:4px;background:#eab308;color:#000;font-weight:bold;margin-left:0.5rem;">Yellow 10-50x</span>
+                <span style="display:inline-block;padding:0.2rem 0.5rem;border-radius:4px;background:#f97316;color:#000;font-weight:bold;margin-left:0.5rem;">Orange &lt;10x</span>
+            </p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">40</div>
+                <div class="stat-label">Candidates</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">36</div>
+                <div class="stat-label">From nostr.band</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">37</div>
+                <div class="stat-label">From kind-3 scan</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">37</div>
+                <div class="stat-label">From oracle</div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="cards">
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#1</div>
+                    <div class="card-name">Saylor</div>
+                    <div class="card-npub">npub15dqlghl...vqjllm5m</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">8000x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">280,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">35</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">MicroStrategy Executive Chairman. Bitcoin maximalist.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub15dqlghlewk84wz3pkqqvzl2w2w36f97g89ljds8x6c094nlu02vqjllm5m" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#2</div>
+                    <div class="card-name">jack</div>
+                    <div class="card-npub">npub1cn4t4cd...sq7g3vle</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">7778x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">350,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">45</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Twitter co-founder. Building Bluesky. Nostr enthusiast.</p>
+            <p class="card-sources">Sources: nostr_band, kind3, oracle</p>
+            
+            <a href="https://njump.me/npub1cn4t4cd78nm900qc2hhqte5aa8c9njm6qkfzw95tszufwcwtcnsq7g3vle" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#3</div>
+                    <div class="card-name">Lyn Alden</div>
+                    <div class="card-npub">npub1a2cww4k...8sdcw83a</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">1692x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">110,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">65</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Investment strategist. Macroeconomic analyst. Author.</p>
+            <p class="card-sources">Sources: nostr_band, kind3, oracle</p>
+            
+            <a href="https://njump.me/npub1a2cww4kn9wqte4ry70vyfwqyqvpswksna27rtxd8vty6c74era8sdcw83a" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#4</div>
+                    <div class="card-name">fiatjaf</div>
+                    <div class="card-npub">npub180cvv07...wsyjh6w6</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">1500x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">180,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">120</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Creator of Nostr protocol. Building the decentralized future.</p>
+            <p class="card-sources">Sources: nostr_band, kind3, oracle</p>
+            
+            <a href="https://njump.me/npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#5</div>
+                    <div class="card-name">Gigi</div>
+                    <div class="card-npub">npub1zuuajd7...8qg76eky</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">1118x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">95,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">85</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Author of 21 Lessons. Bitcoin philosopher.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1zuuajd7u3sx8xu92yav92u0gz3funsn0js6n22stts2268p8he8qg76eky" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#6</div>
+                    <div class="card-name">jb55 (William Casarin)</div>
+                    <div class="card-npub">npub1xtscya3...zsevkk5s</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">895x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">85,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">95</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Damus creator. iOS/macOS Nostr client developer.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1xtscya34g58tk0z605fvr788k263gsu6cy9x0mhnm87echrgufzsevkk5s" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#7</div>
+                    <div class="card-name">Jack Mallers</div>
+                    <div class="card-npub">npub1sg6plzp...3q0uf63m</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">792x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">95,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">120</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Strike CEO. Lightning Network evangelist.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1sg6plzptd64u62a878hep2kev88swjh3tw00gjsfl8f237lmu63q0uf63m" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#8</div>
+                    <div class="card-name">The Bitcoin Therapist</div>
+                    <div class="card-npub">npub17u5dneh...4sdrc9r2</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">764x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">42,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">55</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Bitcoin psychology and mindset.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub17u5dneh8qjp43ecfxr6u5e9sjamsmxyuekrg2ncx74quql3a6x4sdrc9r2" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#9</div>
+                    <div class="card-name">NVK</div>
+                    <div class="card-npub">npub1az9xj85...gstam8y8</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">667x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">120,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">180</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Coinkite CEO. Bitcoin hardware wallet maker. OG Bitcoiner.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1az9xj85cmxv8e9j9y80lvqp97crsqdu2fpu3srwthd99qfu9qsgstam8y8" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#10</div>
+                    <div class="card-name">Relai</div>
+                    <div class="card-npub">npub1dc2nfat...gqs6ajs0</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">500x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">15,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">30</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">European Bitcoin app. Auto-stack sats.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1dc2nfat0e85n0crzxlyt5j6kv272e38p5086h8qkmzfep0ky4sgqs6ajs0" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#11</div>
+                    <div class="card-name">ODELL</div>
+                    <div class="card-npub">npub1g53mukx...esl5ffew</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">472x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">85,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">180</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Citadel Dispatch. Bitcoin privacy advocate. Freedom tech.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1g53mukxnjkcmr94fhryzjqwcxfmjjewg7g9h7mc2dll86jm7eeesl5ffew" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#12</div>
+                    <div class="card-name">ODELL</div>
+                    <div class="card-npub">npub1qny3tkh...ysew95gx</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">472x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">85,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">180</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Citadel Dispatch. Bitcoin privacy advocate.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1qny3tkh0acurzla8x3zy4nhrjz5zd8l9sy9jys09umwng00manysew95gx" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#13</div>
+                    <div class="card-name">Walker</div>
+                    <div class="card-npub">npub18ams6ew...jqctp424</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">368x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">35,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">95</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Bitcoin developer and educator.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub18ams6ewn5aj2n3wt2qawzglx9mr4nzksxhvrdc4gzrecw7n5tvjqctp424" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#14</div>
+                    <div class="card-name">preston</div>
+                    <div class="card-npub">npub1drvpzev...eq0eseet</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">367x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">55,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">150</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">We Study Billionaires podcast. Value investing + Bitcoin.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1drvpzev3syqt0kjrls50050uzf25gehpz9vgdw08hvex7e0vgfeq0eseet" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#15</div>
+                    <div class="card-name">MARTY BENT</div>
+                    <div class="card-npub">npub1guh5gre...ss3r4m8n</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">300x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">75,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">250</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Tales from the Crypt podcast. Bitcoin signal amplifier.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1guh5grefa7vkay4ps6udxg8lrqxg2kgr3qh9n4gduxutg5fvqqss3r4m8n" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#16</div>
+                    <div class="card-name">Vitor Pamplona</div>
+                    <div class="card-npub">npub1gcxzte5...wqlfnj5z</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">250x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">45,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">180</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Creator of Amethyst, the Android Nostr client.</p>
+            <p class="card-sources">Sources: nostr_band, kind3, oracle</p>
+            
+            <a href="https://njump.me/npub1gcxzte5zlkncx26j68ez60fzkvtkm9e0vrwdcvsjakxf9mu9qewqlfnj5z" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#17</div>
+                    <div class="card-name">Semisol</div>
+                    <div class="card-npub">npub1hu3hdct...8qh6h8nh</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">250x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">15,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">60</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer. Relay operator.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1hu3hdctm5nkzd8gslnyedfr5ddz3z547jqcl5j88g4fame2jd08qh6h8nh" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#18</div>
+                    <div class="card-name">verbiricha</div>
+                    <div class="card-npub">npub107jk7ht...rql394xl</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">212x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">18,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">85</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer. Building Habla.news and other tools.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6efrql394xl" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#19</div>
+                    <div class="card-name">Rockstar Dev</div>
+                    <div class="card-npub">npub1j8y6tcd...eqjavrvg</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">212x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">18,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">85</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">BTCPay Server maintainer. Bitcoin FOSS developer.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1j8y6tcdfw3q3f3h794s6un0gyc5742s0k5h5s2yqj0r70cpklqeqjavrvg" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#20</div>
+                    <div class="card-name">calle</div>
+                    <div class="card-npub">npub12rv5lsk...3sf485vg</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">200x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">18,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">90</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Cashu creator. eCash on Lightning.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub12rv5lskctqxxs2c8rf2zlzc7xx3qpvzs3w4etgemauy9thegr43sf485vg" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#21</div>
+                    <div class="card-name">miljan</div>
+                    <div class="card-npub">npub16c0nh3d...9q586nvr</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">200x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">18,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">90</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Primal creator. Nostr client developer.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub16c0nh3dnadzqpm76uctf5hqhe2lny344zsmpm6feee9p5rdxaa9q586nvr" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#22</div>
+                    <div class="card-name">Stuart Bowman</div>
+                    <div class="card-npub">npub138he9w0...js8lrdr2</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">189x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">8,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">45</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub138he9w0tumwpun4rnrmywlez06259938kz3nmjymvs8px7e9d0js8lrdr2" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#23</div>
+                    <div class="card-name">Giszmo</div>
+                    <div class="card-npub">npub1dergggk...fsh9xzpc</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">183x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">22,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">120</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">WalletScrutiny. Bitcoin wallet security researcher.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1dergggklka99wwrs92yz8wdjs952h2ux2ha2ed598ngwu9w7a6fsh9xzpc" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#24</div>
+                    <div class="card-name">PABLOF7z</div>
+                    <div class="card-npub">npub1sn0wden...vq9dg7x7</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">182x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">20,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">110</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer. Building Highlighter and other tools.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1sn0wdenkukak0d9dfczzeacvhkrgz92ak56egt7vdgzn8ssq6mvq9dg7x7" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#25</div>
+                    <div class="card-name">Pablo (Zap.stream)</div>
+                    <div class="card-npub">npub1l2vyh47...fqutajft</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">167x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">25,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">150</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Creator of zap.stream - live streaming on Nostr.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1l2vyh47mk2p0qlsku7hg0vn29faehy9hy34ygaclpn66ukqp3afqutajft" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#26</div>
+                    <div class="card-name">Derek Ross</div>
+                    <div class="card-npub">npub10000003...7q2hz4sl</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">156x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">28,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">180</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr advocate. Community builder.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub10000003zmk89narqpczy4ff6rnuht2wu05na7kpnh3mak7z2j67q2hz4sl" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#27</div>
+                    <div class="card-name">cameri</div>
+                    <div class="card-npub">npub1v0lxxxx...kszrqj49</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">146x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">9,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">65</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer. Relay operator.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#28</div>
+                    <div class="card-name">scsibug</div>
+                    <div class="card-npub">npub1nstrcu6...0q9urg5l</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">140x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">7,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">50</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">nostr-rs-relay creator. Rust Nostr tooling.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1nstrcu63lzpjkz94djajuz2evrgu2psd66cwgc0gz0c0qazezx0q9urg5l" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#29</div>
+                    <div class="card-name">Bitvolt</div>
+                    <div class="card-npub">npub1gke42gw...qsah7q2e</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">138x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">5,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">40</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Bitcoin mining education.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1gke42gwrz2ja5np9tpcr449785hx6zxgzf2329x85843he06uhqsah7q2e" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#30</div>
+                    <div class="card-name">k3tan</div>
+                    <div class="card-npub">npub1dtgg8yk...zqm8up6m</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">133x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">12,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">90</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Ministry of Nodes. Bitcoin node operator education.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1dtgg8yk3h23ldlm6jsy79tz723p4sun9mz62tqwxqe7c363szkzqm8up6m" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#31</div>
+                    <div class="card-name">utxo the friendly ghost</div>
+                    <div class="card-npub">npub1cj8znuz...gsqwrz4u</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">126x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">12,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">95</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Bitcoin educator. Stacker News contributor.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1cj8znuztfqkvq89pl8hceph0svvvqk0qay6nydgk9uyq7fhpfsgsqwrz4u" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#32</div>
+                    <div class="card-name">bitcoinplebdev</div>
+                    <div class="card-npub">npub18dlusgm...mqjvuyg5</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">125x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">7,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">60</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Bitcoin developer education.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub18dlusgmprudw46nracaldxe9a3x3ld90t4zf6899786emsvzw2mqjvuyg5" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#33</div>
+                    <div class="card-name">21 Futures</div>
+                    <div class="card-npub">npub1aypcuyy...uqzddd80</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">123x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">8,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">65</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Bitcoin research and analysis.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1aypcuyy3dkgss6wmvmeung05z56evucgk37wxymvnrc6dg32dauqzddd80" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#34</div>
+                    <div class="card-name">odyzzey</div>
+                    <div class="card-npub">npub1uvl7vhc...pq3mq3sd</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">107x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">8,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">75</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer and designer.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1uvl7vhclmezvdhqha6eclkksln40rjhgwgsggvew683jf93fr4pq3mq3sd" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#35</div>
+                    <div class="card-name">eric99</div>
+                    <div class="card-npub">npub1v3tgrww...zqc6yvjh</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">91x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">5,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">55</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr developer.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1v3tgrwwsv7c6xckyhm5dmluc05jxd4yeqhpxew87chn0kua0tjzqc6yvjh" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#36</div>
+                    <div class="card-name">franzap</div>
+                    <div class="card-npub">npub1h882a66...cs9tfu07</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">87x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">6,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">75</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">Nostr builder.</p>
+            <p class="card-sources">Sources: nostr_band</p>
+            
+            <a href="https://njump.me/npub1h882a66p0zj5j4c5xn2hfzu49c3mcrhrq5ul4zh9x2lrave8sucs9tfu07" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#37</div>
+                    <div class="card-name">Account 89a2e5e7...</div>
+                    <div class="card-npub">npub13x3wteu...pqgy2tlf</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">81x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">2,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">31</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            
+            <p class="card-sources">Sources: kind3, oracle</p>
+            
+            <a href="https://njump.me/npub13x3wteuas9ypv2h89hlvhdrjkdp6j4l6e87ma9ucmzvl8kpazwpqgy2tlf" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#38</div>
+                    <div class="card-name">Matt Corallo</div>
+                    <div class="card-npub">npub185h9z5y...2qcswrdp</div>
+                </div>
+                <div class="ratio-badge" style="background: #22c55e; color: #000;">59x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">5,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">85</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">10th known contributor to Bitcoin Core. Now Full-Time Open-Source Bitcoin+Lightning Projects at Spiral (Part of Block).</p>
+            <p class="card-sources">Sources: kind3, oracle</p>
+            
+            <a href="https://njump.me/npub185h9z5yxn8uc7retm0n6gkm88358lejzparxms5kmy9epr236k2qcswrdp" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#39</div>
+                    <div class="card-name">Rizzo</div>
+                    <div class="card-npub">npub144rdkyh...rsxzag2d</div>
+                </div>
+                <div class="ratio-badge" style="background: #eab308; color: #000;">47x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">3,000</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">64</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            <p class="card-about">I write about Bitcoin History </p>
+            <p class="card-sources">Sources: kind3, oracle</p>
+            
+            <a href="https://njump.me/npub144rdkyhwy59ppp6k4d8s7vq8kpxhu6vlgh4v82mfvpmjjcse6grsxzag2d" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-rank">#40</div>
+                    <div class="card-name">Account 95794448...</div>
+                    <div class="card-npub">npub1j4u5gjz...5s47d6x9</div>
+                </div>
+                <div class="ratio-badge" style="background: #eab308; color: #000;">45x</div>
+            </div>
+            
+            <div class="card-stats">
+                <div class="card-stat">
+                    <div class="card-stat-value">3,500</div>
+                    <div class="card-stat-label">Followers</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-value">77</div>
+                    <div class="card-stat-label">Following</div>
+                </div>
+            </div>
+            
+            
+            <p class="card-sources">Sources: kind3, oracle</p>
+            
+            <a href="https://njump.me/npub1j4u5gjzjyggr3h96x3gjy4akdgwxuk7mgvumv72gym2qyje7fn5s47d6x9" target="_blank" rel="noopener" class="card-link">View on njump.me →</a>
+        </article>
+
+    </main>
+    
+    <footer>
+        <p>Generated: 2026-02-27 13:55:30 UTC</p>
+        <p>Data sources: nostr.band API, Nostr relay (kind-3), WoT Oracle</p>
+        <p>Built for <a href="https://nostr-wot.com" style="color:#8b5cf6;">nostr-wot.com</a></p>
+    </footer>
+</body>
+</html>
